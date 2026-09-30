@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Usage</title>
+    <link rel="stylesheet" href="inspector.css" />
+  </head>
+  <body>
+    <h1 id="name">AI Usage</h1>
+    <p id="allowance"></p>
+    <div id="status" role="status">Connecting to plugin…</div>
+    <p id="details"></p>
+    <button id="toggleConnection" type="button">Disconnect this button</button>
+    <div class="fields">
+      <div>
+        <label for="account">Account</label>
+        <select id="account"></select>
+        <div class="help" id="accountHelp"></div>
+      </div>
+      <div>
+        <label for="nick">Nickname on key</label>
+        <div class="row" style="margin-top: 0">
+          <input
+            id="nick"
+            type="text"
+            maxlength="5"
+            spellcheck="false"
+            autocomplete="off"
+          />
+          <button id="saveNick" type="button" class="primary">
+            Save nickname
+          </button>
+        </div>
+        <div class="help" id="nickHelp">
+          Up to 5 letters or numbers. Leave blank to hide. Connected accounts
+          share their nickname across keys. Press Save or Enter.
+        </div>
+      </div>
+      <div>
+        <label for="display">Percentage</label>
+        <select id="display">
+          <option value="used">Used</option>
+          <option value="remaining">Remaining</option>
+        </select>
+      </div>
+      <div>
+        <label for="window">Usage window</label>
+        <select id="window">
+          <option value="auto">Automatic · use an available allowance</option>
+          <option value="short">5-hour</option>
+          <option value="weekly">Weekly</option>
+        </select>
+      </div>
+      <div id="cursorPoolRow" hidden>
+        <label for="cursorPool">Cursor usage pool</label>
+        <select id="cursorPool">
+          <option value="cursor-models">
+            Cursor Models · Grok and Composer
+          </option>
+          <option value="other-models">Other Models</option>
+        </select>
+        <div class="help">
+          CM = Cursor Models; OM = Other Models. Both reset with your monthly
+          billing cycle. Use separate keys to show both pools.
+        </div>
+      </div>
+      <div id="colorControls">
+        <label>Colors</label>
+        <div class="colors">
+          <div>
+            <label for="barWell">Bar color</label>
+            <button
+              type="button"
+              id="barWell"
+              class="well"
+              aria-label="Open bar color picker"
+            ></button>
+            <input
+              id="barColor"
+              class="color-store"
+              tabindex="-1"
+              value="#11171d"
+              autocomplete="off"
+            />
+            <div class="swatch-label">Presets</div>
+            <div class="swatches" id="barPresets"></div>
+            <div class="swatch-label custom-colors">Custom colors</div>
+            <div class="swatches custom-colors" id="barSwatches"></div>
+          </div>
+          <div>
+            <label for="keyWell">Key background</label>
+            <button
+              type="button"
+              id="keyWell"
+              class="well"
+              aria-label="Open background color picker"
+            ></button>
+            <input
+              id="keyColor"
+              class="color-store"
+              tabindex="-1"
+              value="#11171d"
+              autocomplete="off"
+            />
+            <div class="swatch-label">Presets</div>
+            <div class="swatches" id="keyPresets"></div>
+            <div class="swatch-label custom-colors">Custom colors</div>
+            <div class="swatches custom-colors" id="keySwatches"></div>
+          </div>
+        </div>
+        <div class="row">
+          <button id="resetColors" type="button">Reset colors</button>
+        </div>
+        <div class="help" id="colorHelp" style="margin-top: 8px">
+          Tap the color bar to open the chart on this key's current color.
+          Custom colors are shared across every key in this plugin. A new custom
+          color fills the next empty tile.
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button id="manage" type="button">Manage accounts</button>
+      <button id="addAccount" type="button" class="primary" hidden>
+        Add account
+      </button>
+    </div>
+    <p>
+      Press the key to see the reset countdown for four seconds. An amber dot
+      means the reading is stale. A dash means no current reading is available.
+      N/A in the reset view means the source did not supply a reset time.
+    </p>
+    <details>
+      <summary>Connection settings</summary>
+      <div id="grok" hidden>
+        <p>
+          Uses the active Grok Bot Desktop sign-in to read its included weekly
+          subscription allowance. Keep Grok Bot signed in so it can renew its
+          session. This is the Bot allowance, separate from regular Grok /
+          SuperGrok usage.
+        </p>
+        <p>
+          The sign-in token is read locally and sent only to Grok Bot’s existing
+          backend at api2.cursor.sh. On Mac, macOS may ask you to allow access
+          to the Grok Bot Keychain item. If access is denied, automatic retries
+          pause until you select Refresh now. No API key, chats, extra credits,
+          or billing changes are used.
+        </p>
+        <label
+          ><input id="grokConnected" type="checkbox" style="width: auto" /> Use
+          my Grok Bot sign-in with api2.cursor.sh for weekly usage</label
+        >
+      </div>
+      <div id="cursor" hidden>
+        <p>
+          Reads Cursor’s own sign-in from its local state database
+          (User/globalStorage/state.vscdb), opened read-only, to show included
+          plan usage for the current billing cycle. Keep Cursor signed in so it
+          can renew its session.
+        </p>
+        <p>
+          The sign-in token is read locally and sent only to Cursor’s dashboard
+          service at api2.cursor.sh. It is never saved in settings or logs. No
+          refresh token, API key, chats, or billing changes are used.
+        </p>
+        <label
+          ><input id="cursorConnected" type="checkbox" style="width: auto" />
+          Use my Cursor sign-in with api2.cursor.sh for plan usage</label
+        >
+      </div>
+      <div id="supergrok" hidden>
+        <p>
+          Reads the Grok CLI sign-in from ~/.grok/auth.json to show the
+          SuperGrok subscription’s shared weekly usage pool. Chat, Imagine,
+          Voice, Build and the CLI all draw from this pool, as shown in grok.com
+          Settings → Usage. It is separate from the Grok Bot allowance and from
+          API billing.
+        </p>
+        <p>
+          The session key is read locally and sent only to the Grok CLI’s
+          service at cli-chat-proxy.grok.com. It is never saved in settings or
+          logs. The refresh token is never read, and no API key, chats, or
+          billing changes are used. CLI sessions last about six hours and only
+          the Grok CLI renews them. When the session expires, the key keeps its
+          last reading with an amber dot until you run grok again.
+        </p>
+        <label for="superGrokAccount">Account email (optional)</label
+        ><input
+          id="superGrokAccount"
+          placeholder="Needed only when several accounts are signed in"
+          spellcheck="false"
+        /><label
+          ><input id="superGrokConnected" type="checkbox" style="width: auto" />
+          Use my Grok CLI sign-in with cli-chat-proxy.grok.com for weekly
+          usage</label
+        >
+      </div>
+      <div id="openai">
+        <label for="codexPath">Codex executable (optional)</label
+        ><input
+          id="codexPath"
+          placeholder="Auto-detect Codex"
+          spellcheck="false"
+        /><label for="bucket">Usage bucket</label
+        ><input id="bucket" placeholder="codex" spellcheck="false" />
+        <p>
+          Uses your existing Codex sign-in with ChatGPT. These are Codex
+          subscription limits, not general ChatGPT message limits. No API key is
+          needed.
+        </p>
+      </div>
+      <div id="anthropic">
+        <p>
+          Automatically reads Claude Desktop’s local subscription usage history.
+          Keep Claude open; if the reading becomes stale, open Settings → Usage
+          in Claude. History does not include reset times.
+        </p>
+        <label for="claudeFile">Claude usage file (optional)</label
+        ><input
+          id="claudeFile"
+          placeholder="Auto-detect Claude Desktop history"
+          spellcheck="false"
+        /><button id="connectClaude" type="button">
+          Connect Claude reset times
+        </button>
+        <p id="setup" role="status">
+          Uses the Claude Code subscription status line for percentages and
+          reset timestamps. Sign in with the same Claude account you use in
+          Desktop. Connect selects this source for this button and preserves
+          your existing status line. Restart Claude Code, then use it normally
+          to produce a reading. Clear the usage file field to return to Desktop
+          history.
+        </p>
+        <p>Reset-time usage file: <code id="defaultFile"></code></p>
+      </div>
+    </details>
+    <button id="refresh" type="button">Refresh now</button>
+    <p>
+      <small
+        >Actual provider windows are shown, usually 5 hours and 7 days. Quota
+        percentages are shared account limits, not a count of tokens in this
+        conversation.</small
+      >
+    </p>
+    <p class="help">
+      AI Usage is an independent 3Fold Labs product. It is not affiliated with,
+      sponsored by, or endorsed by the service providers. Brand names and
+      artwork identify compatible services only; their inclusion is not a
+      recommendation or promotion.
+    </p>
+    <div class="backdrop" id="backdrop" aria-hidden="true">
+      <div
+        class="sheet"
+        id="sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="sheetTitle"
+      ></div>
+    </div>
+    <script src="inspector.js?v=palettes"></script>
+  </body>
+</html>

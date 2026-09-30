@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.cache/
+com.3foldlabs.ai-usage.sdPlugin/
+assets/
+src/generated/
+package-lock.json

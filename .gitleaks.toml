@@ -1,0 +1,6 @@
+title = "AI Usage release secret scan"
+[extend]
+useDefault = true
+[allowlist]
+description = "Downloaded dependencies and scanner binary; release contents are scanned separately"
+paths = ['''(?:^|/)node_modules/''', '''(?:^|/)\.git/''', '''(?:^|/)\.cache/gitleaks/''']

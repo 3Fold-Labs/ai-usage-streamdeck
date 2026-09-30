@@ -1,0 +1,159 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+  "UUID": "com.3foldlabs.ai-usage",
+  "Name": "AI Usage",
+  "Version": "0.0.75.0",
+  "Author": "3Fold Labs",
+  "Description": "Open-source subscription usage displays for supported AI accounts.",
+  "Category": "AI Usage",
+  "CategoryIcon": "imgs/category",
+  "Icon": "imgs/plugin",
+  "CodePath": "bin/plugin.js",
+  "Nodejs": {
+    "Version": "24"
+  },
+  "SDKVersion": 3,
+  "Software": {
+    "MinimumVersion": "7.1"
+  },
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    },
+    {
+      "Platform": "mac",
+      "MinimumVersion": "13"
+    }
+  ],
+  "PropertyInspectorPath": "ui/inspector.html",
+  "Actions": [
+    {
+      "UUID": "com.3foldlabs.ai-usage.openai-short",
+      "DisableCaching": true,
+      "Name": "ChatGPT Usage",
+      "Icon": "imgs/actions/openai",
+      "Tooltip": "Show account-rate-limit windows returned by your signed-in Codex app-server. Coverage depends on the source.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "imgs/openai",
+          "ShowTitle": false
+        }
+      ],
+      "VisibleInActionsList": true
+    },
+    {
+      "UUID": "com.3foldlabs.ai-usage.anthropic-short",
+      "DisableCaching": true,
+      "Name": "Claude Usage",
+      "Icon": "imgs/actions/anthropic",
+      "Tooltip": "Show Claude subscription usage. Choose automatic, short, or weekly in settings.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "imgs/anthropic",
+          "ShowTitle": false
+        }
+      ],
+      "VisibleInActionsList": true
+    },
+    {
+      "UUID": "com.3foldlabs.ai-usage.grok-weekly",
+      "DisableCaching": true,
+      "Name": "Grok Bot Usage",
+      "Icon": "imgs/actions/grok",
+      "Tooltip": "Grok Bot weekly subscription allowance. Press for reset countdown.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "imgs/grok",
+          "ShowTitle": false
+        }
+      ],
+      "VisibleInActionsList": true
+    },
+    {
+      "UUID": "com.3foldlabs.ai-usage.cursor-monthly",
+      "DisableCaching": true,
+      "Name": "Cursor Usage",
+      "Icon": "imgs/actions/cursor",
+      "Tooltip": "Cursor plan: included usage for the current billing cycle. Enable the connection in settings. Press for reset countdown.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "imgs/cursor",
+          "ShowTitle": false
+        }
+      ],
+      "VisibleInActionsList": true
+    },
+    {
+      "UUID": "com.3foldlabs.ai-usage.supergrok-weekly",
+      "DisableCaching": true,
+      "Name": "SuperGrok Usage",
+      "Icon": "imgs/actions/supergrok",
+      "Tooltip": "SuperGrok subscription: shared weekly pool used by Chat, Imagine, Voice, Build and the Grok CLI. Not Grok Bot or API billing. Press for reset countdown.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "imgs/supergrok",
+          "ShowTitle": false
+        }
+      ],
+      "VisibleInActionsList": true
+    },
+    {
+      "UUID": "com.3foldlabs.ai-usage.openai-weekly",
+      "DisableCaching": true,
+      "Name": "ChatGPT Weekly",
+      "Icon": "imgs/actions/openai",
+      "Tooltip": "ChatGPT subscription: weekly Codex allowance. Press for reset countdown.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "imgs/openai",
+          "ShowTitle": false
+        }
+      ],
+      "VisibleInActionsList": false
+    },
+    {
+      "UUID": "com.3foldlabs.ai-usage.anthropic-weekly",
+      "DisableCaching": true,
+      "Name": "Claude Weekly",
+      "Icon": "imgs/actions/anthropic",
+      "Tooltip": "Claude weekly subscription usage. Press for reset countdown.",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "imgs/anthropic",
+          "ShowTitle": false
+        }
+      ],
+      "VisibleInActionsList": false
+    }
+  ],
+  "URL": "https://3foldlabs.com"
+}
